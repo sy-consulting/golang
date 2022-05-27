@@ -1,3 +1,3 @@
-module gitlab.com/soteapps/packages/v2022
+module github.com/sy-consulting/golang/samples/interfaces/interface-manager
 
 go 1.18
