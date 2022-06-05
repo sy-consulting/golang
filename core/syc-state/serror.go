@@ -14,14 +14,14 @@ core oversees all the shared services, such as logging, errors, messaging, etc.
 		Details          This can be used for anything including look up value errors.
 
 Notes:
-	Don't argue that a code of nil, is not an error therefore, it should not be in syc-error. This is not college, an
+	Don't argue that a code of nil, is not an error therefore, it should not be in syc-state. This is not college, an
 	error is whatever we say it is.
 */
 package core
 
 import (
-	"bytes"
 	"fmt"
+	_ "github.com/sy-consulting/golang/core"
 )
 
 type SYCState struct {
@@ -36,41 +36,28 @@ type SYCState struct {
 	SYCError              error
 }
 
-// Error categories
-const (
-	USERERROR          = "User_Error"
-	PROCESSERROR       = "Process_Error"
-	NATSERROR          = "NATS_Error"
-	CONTENTERROR       = "Content_Error"
-	PERMISSIONERROR    = "Permission_Error"
-	CONFIGURATIONISSUE = "Configuration_Issue"
-	APICONTRACTERROR   = "API_Contract_Error"
-	GENERALERROR       = "General_Error"
-	MARKDOWNTITLEBAR   = "| Error Code | Category | Parameter Description | Formatted Error Text |\n|--------|--------|--------|--------|\n"
-	FUNCCOMMENTSHEADER = "\tError Code with requiring parameters:\n"
-	SQLSTATE           = "SQLSTATE"
-	PREFIX             = ""
-	INDENT             = "  "
-)
-
-var (
-	EmptyMap = make(map[string]string)
-)
+//// Error categories
+//const (
+//	USERERROR          = "User_Error"
+//	PROCESSERROR       = "Process_Error"
+//	NATSERROR          = "NATS_Error"
+//	CONTENTERROR       = "Content_Error"
+//	PERMISSIONERROR    = "Permission_Error"
+//	CONFIGURATIONISSUE = "Configuration_Issue"
+//	APICONTRACTERROR   = "API_Contract_Error"
+//	GENERALERROR       = "General_Error"
+//	MARKDOWNTITLEBAR   = "| Error Code | Category | Parameter Description | Formatted Error Text |\n|--------|--------|--------|--------|\n"
+//	FUNCCOMMENTSHEADER = "\tError Code with requiring parameters:\n"
+//	SQLSTATE           = "SQLSTATE"
+//	PREFIX             = ""
+//	INDENT             = "  "
+//)
+//
+//var (
+//	EmptyMap = make(map[string]string)
+//)
 
 // Error returns the string representation of the error message.
-func (m core.Manager) Error() string {
-
-	var buf bytes.Buffer
-
-	// If wrapping an error, print its Error() message.
-	// Otherwise print the error code & message.
-	if e.Err != nil {
-		buf.WriteString(e.Err.Error())
-	} else {
-		if e.ErrCode != 0 {
-			fmt.Fprintf(&buf, "<%s:%d> ", e.ErrType, e.ErrCode)
-		}
-		buf.WriteString(e.FmtErrMsg)
-	}
-	return buf.String()
+func (m core.Manager) state() string {
+	return fmt.Sprintf("The state is good for %v in %v!", m.Application, m.Environment)
 }
