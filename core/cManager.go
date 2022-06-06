@@ -17,7 +17,6 @@ package core
 import (
 	"fmt"
 	core "github.com/sy-consulting/golang/core/cSystemInfo"
-	"github.com/sy-consulting/golang/samples/interfaces/interface-manager/messageManager"
 )
 
 const (
@@ -39,48 +38,20 @@ func New(application, environment string) (coreManagerPtr *Manager) {
 		environment: environment,
 	}
 
-	fmt.Println("Example one - single and slice calls")
-	// Call to Mock New
-	core.SystemInfoMock{}.GetIP()
-	//Multiple calls to Mock New
-	mockCalls := []core.SystemInfoMock{{}, {}}
-	for _, call := range mockCalls {
-		call.GetIP()
-		fmt.Printf("IP: %v\n", call.InternalIP)
-	}
-	fmt.Println("Example one - done")
-
-	fmt.Println("Example two - single and slice calls")
-	// Call to Mock New
-	coreManagerPtr.internalIP = core.SystemInfo{}.GetIP()
-	fmt.Printf("IP: %v\n", coreManagerPtr.internalIP)
-
-	//Multiple calls to Mock New
-	Calls := []core.SystemInfo{{}, {}}
-	for _, call := range Calls {
-		coreManagerPtr.internalIP = call.GetIP()
-		fmt.Printf("IP: %v\n", coreManagerPtr.internalIP)
-	}
-	fmt.Println("Example one - done")
-
 	fmt.Println("===================")
 	fmt.Println("Using Interface")
 	fmt.Println("===================")
 
 	fmt.Println("Example running both")
 	// Call to Real New
-	cSM :=
-	cSM.New()
+	fmt.Println("Running real code")
+	cSM := core.SystemInfoIF(core.SystemInfo{})
+	fmt.Printf("IP: %v\n", cSM.GetIP())
 	// Call to Mock New
-	cSM =
-	// Multiple calls to Real New
-	calls := []messageManager.SMessage{messageManager.RealSMessage{"Scott"}, messageManager.MockSMessage{"Scott"}}
-	for _, call := range calls {
-		call.New()
-		call.NatsCall()
-	}
-	fmt.Println("Example running both - done\n")
-
+	fmt.Println("Running mock code")
+	cSM = core.SystemInfoIF(core.SystemInfoMock{})
+	fmt.Printf("IP: %v\n", cSM.GetIP())
+	fmt.Println("Example running both - done")
 
 	return
 }

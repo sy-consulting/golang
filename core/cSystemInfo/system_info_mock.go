@@ -18,6 +18,6 @@ type SystemInfoMock struct {
 }
 
 // SystemInfoMock.GetIP
-func (si SystemInfoMock) GetIP() net.Addr {
-	return nil
+func (SystemInfoMock) GetIP() string {
+	return ""
 }

@@ -19,7 +19,7 @@ type SystemInfo struct {
 }
 
 // SystemInfo.GetIP
-func (si SystemInfo) GetIP() (x string) {
+func (SystemInfo) GetIP() (x string) {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
 		panic(err)

@@ -1,9 +1,9 @@
 package core
 
 type SystemInfoIF interface {
-	GetIP()
+	GetIP() string
 }
 
-func GetIP(siIF SystemInfoIF) {
-	siIF.GetIP()
+func GetIP(siIF SystemInfoIF) (x string) {
+	return siIF.GetIP()
 }
