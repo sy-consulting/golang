@@ -1,13 +1,9 @@
-package cSystemInfo
-
-const (
-// Add Constants here
-)
+package core
 
 type SystemInfoIF interface {
 	GetIP()
 }
 
-func GetIP(message SystemInfoIF) {
-	message.GetIP()
+func GetIP(siIF SystemInfoIF) {
+	siIF.GetIP()
 }

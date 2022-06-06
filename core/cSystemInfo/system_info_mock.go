@@ -7,7 +7,7 @@ RESTRICTIONS:
 NOTES:
     None
 */
-package cSystemInfo
+package core
 
 import (
 	"net"
@@ -19,6 +19,5 @@ type SystemInfoMock struct {
 
 // SystemInfoMock.GetIP
 func (si SystemInfoMock) GetIP() net.Addr {
-	si.InternalIP = nil
 	return nil
 }

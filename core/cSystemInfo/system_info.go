@@ -7,10 +7,11 @@ RESTRICTIONS:
 NOTES:
     None
 */
-package cSystemInfo
+package core
 
 import (
 	"net"
+	"strings"
 )
 
 type SystemInfo struct {
@@ -18,12 +19,12 @@ type SystemInfo struct {
 }
 
 // SystemInfo.GetIP
-func (si SystemInfo) GetIP() net.Addr {
+func (si SystemInfo) GetIP() (x string) {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
 		panic(err)
 	}
 	defer conn.Close()
 
-	return conn.LocalAddr().(*net.UDPAddr)
+	return strings.Split(conn.LocalAddr().String(), ":")[0]
 }
