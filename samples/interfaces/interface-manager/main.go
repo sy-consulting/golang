@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/sy-consulting/golang/samples/interfaces/interface-manager/core"
+	"github.com/sy-consulting/golang/samples/interfaces/interface-manager/messageManager"
 )
 
 const (
@@ -20,9 +20,9 @@ func main() {
 
 	fmt.Println("Example one - single and slice calls")
 	// Call to Mock New
-	core.MockSMessage{}.New()
+	messageManager.MockSMessage{}.New()
 	// Multiple calls to Mock New
-	mockCalls := []core.MockSMessage{{"SCOTT"}}
+	mockCalls := []messageManager.MockSMessage{{"SCOTT"}}
 	for _, call := range mockCalls {
 		call.New()
 		call.NatsCall()
@@ -31,9 +31,9 @@ func main() {
 
 	fmt.Println("Example two - single and slice calls")
 	// Call to Real New
-	core.RealSMessage{}.New()
+	messageManager.RealSMessage{}.New()
 	// Multiple calls to Real New
-	realCalls := []core.RealSMessage{{"SCOTT"}}
+	realCalls := []messageManager.RealSMessage{{"SCOTT"}}
 	for _, call := range realCalls {
 		call.New()
 		call.NatsCall()
@@ -42,13 +42,13 @@ func main() {
 
 	fmt.Println("Example running both")
 	// Call to Real New
-	cSM := core.SMessage(core.RealSMessage{})
+	cSM := messageManager.SMessageIF(messageManager.RealSMessage{})
 	cSM.New()
 	// Call to Mock New
-	cSM = core.SMessage(core.MockSMessage{})
+	cSM = messageManager.SMessageIF(messageManager.MockSMessage{})
 	cSM.New()
 	// Multiple calls to Real New
-	calls := []core.SMessage{core.RealSMessage{"Scott"}, core.MockSMessage{"Scott"}}
+	calls := []messageManager.SMessageIF{messageManager.RealSMessage{"Scott"}, messageManager.MockSMessage{"Scott"}}
 	for _, call := range calls {
 		call.New()
 		call.NatsCall()
@@ -57,9 +57,9 @@ func main() {
 
 	fmt.Println("Example running only Real")
 	// Call to Real New
-	cSM = core.SMessage(core.RealSMessage{})
+	cSM = messageManager.SMessageIF(messageManager.RealSMessage{})
 	cSM.New()
-	calls = []core.SMessage{core.RealSMessage{"Scott"}}
+	calls = []messageManager.SMessageIF{messageManager.RealSMessage{"Scott"}}
 	for _, call := range calls {
 		call.New()
 		call.NatsCall()
@@ -68,9 +68,9 @@ func main() {
 
 	fmt.Println("Example running only mock")
 	// Call to Mock New
-	cSM = core.SMessage(core.MockSMessage{})
+	cSM = messageManager.SMessageIF(messageManager.MockSMessage{})
 	cSM.New()
-	calls = []core.SMessage{core.MockSMessage{"Scott"}}
+	calls = []messageManager.SMessageIF{messageManager.MockSMessage{"Scott"}}
 	for _, call := range calls {
 		call.New()
 		call.NatsCall()
