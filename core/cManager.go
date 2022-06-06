@@ -15,7 +15,6 @@ Notes:
 package core
 
 import (
-	"fmt"
 	core "github.com/sy-consulting/golang/core/cSystemInfo"
 )
 
@@ -40,7 +39,6 @@ func New(application, environment string, x core.SystemInfoIF) (coreManagerPtr *
 	}
 
 	coreManagerPtr.internalIP = core.SystemInfoIF(x).GetIP()
-	fmt.Printf("IP: %v\n", coreManagerPtr.internalIP)
 
 	return
 }
