@@ -5,7 +5,12 @@ const (
 )
 
 type SMessage interface {
+	New()
 	NatsCall()
+}
+
+func New(message SMessage) {
+	message.New()
 }
 
 func NatsCall(message SMessage) {

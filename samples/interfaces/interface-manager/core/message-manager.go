@@ -10,7 +10,11 @@ const (
 )
 
 type RealSMessage struct {
-	Owner string
+	Application string
+}
+
+func (RealSMessage) New() {
+	fmt.Println("I'm the real McCoy. My Name is Mr. New NATS.")
 }
 
 func (RealSMessage) NatsCall() {

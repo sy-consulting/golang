@@ -10,7 +10,11 @@ const (
 )
 
 type MockSMessage struct {
-	Owner string
+	Application string
+}
+
+func (MockSMessage) New() {
+	fmt.Println("I'm an imposter. My Name is Mr. Mock New.")
 }
 
 func (MockSMessage) NatsCall() {
