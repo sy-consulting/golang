@@ -31,27 +31,16 @@ type Manager struct {
 }
 
 // Core.New
-func New(application, environment string) (coreManagerPtr *Manager) {
+func New(application, environment string, x core.SystemInfoIF) (coreManagerPtr *Manager) {
 
 	coreManagerPtr = &Manager{
 		application: application,
 		environment: environment,
+		internalIP:  "",
 	}
 
-	fmt.Println("===================")
-	fmt.Println("Using Interface")
-	fmt.Println("===================")
-
-	fmt.Println("Example running both")
-	// Call to Real New
-	fmt.Println("Running real code")
-	cSM := core.SystemInfoIF(core.SystemInfo{})
-	fmt.Printf("IP: %v\n", cSM.GetIP())
-	// Call to Mock New
-	fmt.Println("Running mock code")
-	cSM = core.SystemInfoIF(core.SystemInfoMock{})
-	fmt.Printf("IP: %v\n", cSM.GetIP())
-	fmt.Println("Example running both - done")
+	coreManagerPtr.internalIP = core.SystemInfoIF(x).GetIP()
+	fmt.Printf("IP: %v\n", coreManagerPtr.internalIP)
 
 	return
 }
