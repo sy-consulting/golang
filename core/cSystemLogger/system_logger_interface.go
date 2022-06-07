@@ -1,9 +1,14 @@
 package cSystemLogger
 
-type SystemLoggerIf interface {
+type SystemLoggerIF interface {
+	//initLogger(io.Writer, string) *SystemLogger
 	TurnDebugOn()
 }
 
-func TurnDebugOn(message SystemLoggerIf) {
+//func initLogger(slIF SystemLoggerIF, infoHandle io.Writer, msgType string) (mySystemLogger *SystemLogger) {
+//	return slIF.initLogger(infoHandle, msgType)
+//}
+
+func TurnDebugOn(message SystemLoggerIF) {
 	message.TurnDebugOn()
 }

@@ -67,7 +67,7 @@ func TestNew(t *testing.T) {
 		actualResult = true
 		t.Run(ts.name, func(t *testing.T) {
 			var (
-				x = New(ts.arguments.application, ts.arguments.environment, false)
+				x = New(ts.arguments.application, ts.arguments.environment, MOCK)
 			)
 			if x.application != TEST_APPLICATION {
 				actualResult = false

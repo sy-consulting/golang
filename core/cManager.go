@@ -29,11 +29,13 @@ type Manager struct {
 	environment  string
 	internalIP   string
 	systemInfo   cSystemInfo.SystemInfoIF
-	systemLogger cSystemLogger.SystemLoggerIf
+	systemLogger cSystemLogger.SystemLoggerIF
 }
 
 // Core.New
 func New(application, environment string, mock bool) (coreManagerPtr *Manager) {
+
+	cSystemLogger.New()
 
 	coreManagerPtr = &Manager{
 		application: application,
@@ -42,11 +44,11 @@ func New(application, environment string, mock bool) (coreManagerPtr *Manager) {
 	}
 
 	coreManagerPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfo{})
-	coreManagerPtr.systemLogger = cSystemLogger.SystemLoggerIf(cSystemLogger.SystemLogger{})
+	coreManagerPtr.systemLogger = cSystemLogger.SystemLoggerIF(cSystemLogger.SystemLogger{})
 
 	if mock {
 		coreManagerPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfoMock{})
-		coreManagerPtr.systemLogger = cSystemLogger.SystemLoggerIf(cSystemLogger.SystemLoggerMock{})
+		coreManagerPtr.systemLogger = cSystemLogger.SystemLoggerIF(cSystemLogger.SystemLoggerMock{})
 	}
 
 	coreManagerPtr.systemLogger.TurnDebugOn()
