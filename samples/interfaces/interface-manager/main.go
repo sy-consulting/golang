@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/sy-consulting/golang/samples/interfaces/interface-manager/messageManager"
+	secondManager "github.com/sy-consulting/golang/samples/interfaces/interface-manager/secondPackage"
 )
 
 const (
@@ -27,6 +28,8 @@ func main() {
 		call.New()
 		call.NatsCall()
 	}
+	// Mr. Second
+	secondManager.MockSecond{}.SecondCall()
 	fmt.Println("Example one - done\n")
 
 	fmt.Println("Example two - single and slice calls")
@@ -38,6 +41,8 @@ func main() {
 		call.New()
 		call.NatsCall()
 	}
+	// Mr. Second
+	secondManager.RealSecond{}.SecondCall()
 	fmt.Println("Example two - done\n")
 
 	fmt.Println("Example running both")
@@ -64,6 +69,9 @@ func main() {
 		call.New()
 		call.NatsCall()
 	}
+	// Mr. Second
+	secondSM := secondManager.SecondIF(secondManager.RealSecond{})
+	secondSM.SecondCall()
 	fmt.Println("Example running only Real - done\n")
 
 	fmt.Println("Example running only mock")
@@ -75,6 +83,9 @@ func main() {
 		call.New()
 		call.NatsCall()
 	}
+	// Mr. Second
+	secondSM = secondManager.SecondIF(secondManager.MockSecond{})
+	secondSM.SecondCall()
 	fmt.Println("Example running only mock - done")
 
 	fmt.Println("Test has completed!")
