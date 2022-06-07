@@ -7,7 +7,7 @@ RESTRICTIONS:
 NOTES:
     None
 */
-package core
+package cSystemInfo
 
 import (
 	"net"

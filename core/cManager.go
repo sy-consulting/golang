@@ -15,7 +15,7 @@ Notes:
 package core
 
 import (
-	core "github.com/sy-consulting/golang/core/cSystemInfo"
+	cSystemInfo "github.com/sy-consulting/golang/core/cSystemInfo"
 )
 
 const (
@@ -30,7 +30,7 @@ type Manager struct {
 }
 
 // Core.New
-func New(application, environment string, x core.SystemInfoIF) (coreManagerPtr *Manager) {
+func New(application, environment string, x cSystemInfo.SystemInfoIF) (coreManagerPtr *Manager) {
 
 	coreManagerPtr = &Manager{
 		application: application,
@@ -38,7 +38,9 @@ func New(application, environment string, x core.SystemInfoIF) (coreManagerPtr *
 		internalIP:  "",
 	}
 
-	coreManagerPtr.internalIP = core.SystemInfoIF(x).GetIP()
+	coreManagerPtr.internalIP = cSystemInfo.SystemInfoIF(x).GetIP()
+
+	//systemLogger := core.SystemLogger{}
 
 	return
 }

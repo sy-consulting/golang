@@ -1,4 +1,4 @@
-package core
+package cSystemInfo
 
 type SystemInfoIF interface {
 	GetIP() string
