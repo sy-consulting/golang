@@ -36,21 +36,21 @@ type SystemLogger struct {
 	lHandler    io.Writer
 }
 
-func New(application, environment, internalIP string) (systemLoggerPtr *SystemLogger) {
-	//func New(application, environment, internalIP, ) (systemLoggerPtr *SystemLogger) {
-
-	systemLoggerPtr = &SystemLogger{
-		application: application,
-		environment: environment,
-		internalIP:  internalIP,
-		lLevel:      INFO_LEVEL,
-		logger:      nil,
-	}
-
-	systemLoggerPtr.logger = log.New(systemLoggerPtr.lHandler, fmt.Sprintf("%v.%v.%v:", systemLoggerPtr.application, systemLoggerPtr.environment, systemLoggerPtr.internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
-
-	return
-}
+//func New(application, environment, internalIP string) (systemLoggerPtr *SystemLogger) {
+//	//func New(application, environment, internalIP, ) (systemLoggerPtr *SystemLogger) {
+//
+//	systemLoggerPtr = &SystemLogger{
+//		application: application,
+//		environment: environment,
+//		internalIP:  internalIP,
+//		lLevel:      INFO_LEVEL,
+//		logger:      nil,
+//	}
+//
+//	systemLoggerPtr.logger = log.New(systemLoggerPtr.lHandler, fmt.Sprintf("%v.%v.%v:", systemLoggerPtr.application, systemLoggerPtr.environment, systemLoggerPtr.internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
+//
+//	return
+//}
 
 // SystemLogger.TurnDebugOn
 func (SystemLogger) TurnDebugOn() {

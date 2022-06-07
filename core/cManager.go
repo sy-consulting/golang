@@ -15,8 +15,8 @@ Notes:
 package core
 
 import (
-	cSystemInfo "github.com/sy-consulting/golang/core/cSystemInfo"
-	cSystemLogger "github.com/sy-consulting/golang/core/cSystemLogger"
+	"github.com/sy-consulting/golang/core/cSystemInfo"
+	"github.com/sy-consulting/golang/core/cSystemLogger"
 )
 
 const (
@@ -29,28 +29,27 @@ type Manager struct {
 	environment  string
 	internalIP   string
 	systemInfo   cSystemInfo.SystemInfoIF
-	systemLogger *cSystemLogger.SystemLogger
+	systemLogger cSystemLogger.SystemLogger
 }
 
 // Core.New
 func New(application, environment string, mock bool) (coreManagerPtr *Manager) {
 
 	coreManagerPtr = &Manager{
-		application:  application,
-		environment:  environment,
-		internalIP:   "",
-		systemLogger: nil,
+		application: application,
+		environment: environment,
+		internalIP:  "",
 	}
 
 	if mock {
 		coreManagerPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfoMock{})
-		coreManagerPtr.systemLogger = cSystemLogger.SystemLoggerIF(cSystemInfo.SystemLoggerMock{})
+		coreManagerPtr.systemLogger = cSystemLogger.SystemLoggerIF(cSystemLogger.)
 	}
 
 	coreManagerPtr.internalIP = coreManagerPtr.systemInfo.GetIP()
+	//coreManagerPtr.systemLogger = cSystemLogger.New(coreManagerPtr.application, coreManagerPtr.application, coreManagerPtr.internalIP)
 
-	systemLogger := cSystemLogger.New(coreManagerPtr.application, coreManagerPtr.application, coreManagerPtr.internalIP)
-	systemLogger.TurnDebugOn()
+	//coreManagerPtr.systemLogger.TurnDebugOn()
 
 	return
 }

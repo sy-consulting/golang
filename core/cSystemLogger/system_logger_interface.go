@@ -4,6 +4,6 @@ type SystemLoggerIF interface {
 	TurnDebugOn() string
 }
 
-func TurnDebugOn(siIF SystemLoggerIF) {
-	siIF.TurnDebugOn()
+func TurnDebugOn(slIF SystemLoggerIF) {
+	slIF.TurnDebugOn()
 }
