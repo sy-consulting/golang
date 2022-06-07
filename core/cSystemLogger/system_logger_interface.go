@@ -1,9 +1,9 @@
 package cSystemLogger
 
-type SystemLoggerIF interface {
-	TurnDebugOn() string
+type SystemLoggerIf interface {
+	TurnDebugOn()
 }
 
-func TurnDebugOn(slIF SystemLoggerIF) {
-	slIF.TurnDebugOn()
+func TurnDebugOn(message SystemLoggerIf) {
+	message.TurnDebugOn()
 }
