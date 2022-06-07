@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	core "github.com/sy-consulting/golang/core/cSystemInfo"
 	"testing"
 )
 
@@ -10,6 +9,7 @@ import (
 const (
 	TEST_APPLICATION = "application"
 	TEST_ENVIRONMENT = "environment"
+	MOCK             = true
 	MOCK_PASSED      = "core.SystemInfoMock{}"
 )
 
@@ -67,7 +67,7 @@ func TestNew(t *testing.T) {
 		actualResult = true
 		t.Run(ts.name, func(t *testing.T) {
 			var (
-				x = New(ts.arguments.application, ts.arguments.environment, core.SystemInfoIF(core.SystemInfoMock{}))
+				x = New(ts.arguments.application, ts.arguments.environment, MOCK)
 			)
 			if x.application != TEST_APPLICATION {
 				actualResult = false
