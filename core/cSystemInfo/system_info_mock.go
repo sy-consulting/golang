@@ -9,15 +9,11 @@ NOTES:
 */
 package cSystemInfo
 
-import (
-	"net"
-)
-
 type SystemInfoMock struct {
-	InternalIP net.Addr
+	Owner string
 }
 
 // SystemInfoMock.GetIP
 func (SystemInfoMock) GetIP() string {
-	return ""
+	return "0.0.0.0"
 }

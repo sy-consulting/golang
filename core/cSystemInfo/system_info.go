@@ -15,7 +15,7 @@ import (
 )
 
 type SystemInfo struct {
-	InternalIP net.Addr
+	Owner string
 }
 
 // SystemInfo.GetIP

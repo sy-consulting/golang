@@ -35,13 +35,10 @@ type Manager struct {
 // Core.New
 func New(application, environment string, mock bool) (coreManagerPtr *Manager) {
 
-	cSystemLogger.New()
-
 	coreManagerPtr = &Manager{
-		application:  application,
-		environment:  environment,
-		internalIP:   "",
-		systemLogger: cSystemLogger.New(),
+		application: application,
+		environment: environment,
+		internalIP:  "",
 	}
 
 	coreManagerPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfo{})
@@ -51,6 +48,7 @@ func New(application, environment string, mock bool) (coreManagerPtr *Manager) {
 	}
 
 	coreManagerPtr.internalIP = coreManagerPtr.systemInfo.GetIP()
+	coreManagerPtr.systemLogger = cSystemLogger.New(application, environment, coreManagerPtr.internalIP)
 
 	return
 }
