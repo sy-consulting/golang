@@ -1,3 +1,7 @@
+/*
+	This test is a manual check of the results. Capturing the StdOut didn't work so the results could be checked programmatically.
+*/
+
 package cSystemLogger
 
 import (
@@ -9,8 +13,6 @@ const (
 	TEST_APPLICATION = "application"
 	TEST_ENVIRONMENT = "environment"
 	TEST_INTERNALIP  = "192.0.0.0"
-	//TEST_SPLIT_ERRORS      = true
-	//TEST_DONT_SPLIT_ERRORS = false
 )
 
 func TestNew(t *testing.T) {
@@ -19,7 +21,6 @@ func TestNew(t *testing.T) {
 		application string
 		environment string
 		internalIP  string
-		//splitErrors  bool
 	}
 
 	var (
@@ -38,7 +39,6 @@ func TestNew(t *testing.T) {
 				application: TEST_APPLICATION,
 				environment: TEST_ENVIRONMENT,
 				internalIP:  TEST_INTERNALIP,
-				//splitErrors:  TEST_DONT_SPLIT_ERRORS,
 			},
 			desiredResult: true,
 		},
@@ -50,11 +50,13 @@ func TestNew(t *testing.T) {
 				x = New(ts.arguments.application, ts.arguments.environment, ts.arguments.internalIP)
 			)
 			x.TurnDebugOn()
-			x.LogMessage("This is a test message from Mr. Mock")
+			x.DebugMessage("This is a debug message from Mr. Mock")
 			x.TurnDebugOff()
-			x.LogMessage("This is a second test message from Mr. Mock")
+			x.LogMessage("This is a info test message from Mr. Mock")
+			x.DebugMessage("Just checking to make sure a debug message was not displayed")
 			x.TurnDebugOn()
-			x.LogMessage("and a third test message from Mr. Mock")
+			x.DebugMessage("The final debug test message from Mr. Mock")
+			x.LogMessage("and the final Info message is displayed")
 		})
 		if actualResult != ts.desiredResult {
 			for _, message := range errorMessages {
