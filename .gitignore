@@ -14,3 +14,4 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 pkg
+/core/cSystemLogger/application_environment_*.log

@@ -6,10 +6,9 @@ import (
 
 //goland:noinspection ALL
 const (
-	TEST_APPLICATION   = "application"
-	TEST_ENVIRONMENT   = "environment"
-	TEST_INTERNALIP    = "192.0.0.1"
-	TEST_WRITE_TO_FILE = true
+	TEST_APPLICATION = "application"
+	TEST_ENVIRONMENT = "environment"
+	TEST_INTERNALIP  = "192.0.0.0"
 	//TEST_SPLIT_ERRORS      = true
 	//TEST_DONT_SPLIT_ERRORS = false
 )
@@ -20,7 +19,6 @@ func TestNew(t *testing.T) {
 		application string
 		environment string
 		internalIP  string
-		writeToFile bool
 		//splitErrors  bool
 	}
 
@@ -40,7 +38,6 @@ func TestNew(t *testing.T) {
 				application: TEST_APPLICATION,
 				environment: TEST_ENVIRONMENT,
 				internalIP:  TEST_INTERNALIP,
-				writeToFile: TEST_WRITE_TO_FILE,
 				//splitErrors:  TEST_DONT_SPLIT_ERRORS,
 			},
 			desiredResult: true,
@@ -50,10 +47,11 @@ func TestNew(t *testing.T) {
 		actualResult = true
 		t.Run(ts.name, func(t *testing.T) {
 			var (
-				x = New(ts.arguments.application, ts.arguments.environment, ts.arguments.internalIP, true)
+				x = New(ts.arguments.application, ts.arguments.environment, ts.arguments.internalIP)
 			)
 			x.TurnDebugOn()
 			x.TurnDebugOff()
+			x.TurnDebugOn()
 		})
 		if actualResult != ts.desiredResult {
 			for _, message := range errorMessages {
