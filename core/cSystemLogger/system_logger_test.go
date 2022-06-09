@@ -50,8 +50,11 @@ func TestNew(t *testing.T) {
 				x = New(ts.arguments.application, ts.arguments.environment, ts.arguments.internalIP)
 			)
 			x.TurnDebugOn()
+			x.LogMessage("This is a test message from Mr. Mock")
 			x.TurnDebugOff()
+			x.LogMessage("This is a second test message from Mr. Mock")
 			x.TurnDebugOn()
+			x.LogMessage("and a third test message from Mr. Mock")
 		})
 		if actualResult != ts.desiredResult {
 			for _, message := range errorMessages {

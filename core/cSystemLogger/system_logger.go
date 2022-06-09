@@ -17,8 +17,9 @@ const (
 	DEBUG = "DEBUG"
 	INFO  = "INFO"
 	// Defined strings
-	LOG_PREFIX        = "%v.%v.%v.%v:"
+	LOG_PREFIX        = "%v.%v.%v:"
 	SETTING_LOG_LEVEL = "Setting System Logger to %v level"
+	LOG_MESSAGE       = "%v %v"
 )
 
 type SystemLogger struct {
@@ -44,25 +45,23 @@ func New(application, environment, internalIP string) (systemLoggerPtr *SystemLo
 
 func initialize(application, environment, internalIP, logLevel string) *log.Logger {
 
-	return log.New(os.Stdout, fmt.Sprintf(LOG_PREFIX, application, environment, internalIP, logLevel), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
+	return log.New(os.Stdout, fmt.Sprintf(LOG_PREFIX, application, environment, internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
 }
 
 func (sl SystemLogger) TurnDebugOn() {
 	sl.logLevel = DEBUG
-	sl.changeLogPrefix()
 	sl.printLogLevel()
 }
 
 func (sl SystemLogger) TurnDebugOff() {
 	sl.logLevel = INFO
-	sl.changeLogPrefix()
 	sl.printLogLevel()
-}
-
-func (sl SystemLogger) changeLogPrefix() {
-	sl.loggerPtr = initialize(sl.application, sl.environment, sl.internalIP, sl.logLevel)
 }
 
 func (sl SystemLogger) printLogLevel() {
 	sl.loggerPtr.Printf(SETTING_LOG_LEVEL, sl.logLevel)
+}
+
+func (sl SystemLogger) LogMessage(message string) {
+	sl.loggerPtr.Printf(LOG_MESSAGE, sl.logLevel, message)
 }
