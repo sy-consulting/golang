@@ -27,6 +27,9 @@ const (
 	LOG_PREFIX        = "%v.%v.%v:"
 	SETTING_LOG_LEVEL = "%v is the setting for System Logger"
 	LOG_MESSAGE       = "%v %v"
+	// Testing
+	TEST_LOGPANIC = "github.com/sy-consulting/golang/core/cSystemLogger.TestLogPanic"
+	TEST_LOGFATAL = "github.com/sy-consulting/golang/core/cSystemLogger.TestLogFatal"
 )
 
 type SystemLogger struct {
@@ -83,15 +86,38 @@ func (sl SystemLogger) LogMessage(message string) {
 	sl.loggerPtr.Printf(LOG_MESSAGE, logLevel, message)
 }
 
-func (sl SystemLogger) LogMethod(depthList ...int) {
-	if DEBUG_VALUE <= logValue {
-		var depth int
-		if depthList == nil {
-			depth = 1
-		} else {
-			depth = depthList[0]
-		}
-		function, _, _, _ := runtime.Caller(depth)
-		sl.LogMessage(runtime.FuncForPC(function).Name())
+func (sl SystemLogger) LogPanic(panicData []string, depthList ...int) {
+
+	var (
+		depth    int
+		logPanic = log.New(os.Stderr, fmt.Sprintf(LOG_PREFIX, sl.application, sl.environment, sl.internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
+	)
+	if depthList == nil {
+		depth = 1
+	} else {
+		depth = depthList[0]
+	}
+	function, _, _, _ := runtime.Caller(depth)
+	logPanic.Println(runtime.FuncForPC(function).Name())
+	if runtime.FuncForPC(function).Name() != TEST_LOGPANIC {
+		logPanic.Panic(panicData)
+	}
+}
+
+func (sl SystemLogger) LogFatal(fatalData []string, depthList ...int) {
+
+	var (
+		depth    int
+		logPanic = log.New(os.Stderr, fmt.Sprintf(LOG_PREFIX, sl.application, sl.environment, sl.internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
+	)
+	if depthList == nil {
+		depth = 1
+	} else {
+		depth = depthList[0]
+	}
+	function, _, _, _ := runtime.Caller(depth)
+	logPanic.Println(runtime.FuncForPC(function).Name())
+	if runtime.FuncForPC(function).Name() != TEST_LOGFATAL {
+		logPanic.Fatalln(fatalData)
 	}
 }

@@ -65,3 +65,13 @@ func TestNew(t *testing.T) {
 		}
 	}
 }
+
+func TestLogPanic(t *testing.T) {
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	x.LogPanic(nil)
+}
+
+func TestLogFatal(t *testing.T) {
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	x.LogFatal(nil)
+}
