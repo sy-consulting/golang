@@ -23,45 +23,28 @@ var (
 )
 
 func TestNew(t *testing.T) {
-
-	type arguments struct {
-		application string
-		environment string
-		internalIP  string
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	if x == nil {
+		t.Error("SystemError.New failed to return an object")
 	}
+}
 
-	var (
-		errorMessages []string
-		actualResult  bool
-	)
-
-	tests := []struct {
-		name          string
-		arguments     arguments
-		desiredResult bool
-	}{
-		{
-			name: "positive-case: writes log record with all parameters populated",
-			arguments: arguments{
-				application: TEST_APPLICATION,
-				environment: TEST_ENVIRONMENT,
-				internalIP:  TEST_INTERNALIP,
-			},
-			desiredResult: true,
-		},
+func TestErrItemNotPopulated_100100(t *testing.T) {
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	myError := x.ErrItemNotPopulated_100100(TEST_APPLICATION)
+	if myError == nil {
+		t.Error("SystemError.ErrItemNotPopulated_100100 failed to return an object")
 	}
-	for _, ts := range tests {
-		actualResult = true
-		t.Run(ts.name, func(t *testing.T) {
-			var (
-				x = New(ts.arguments.application, ts.arguments.environment, ts.arguments.internalIP)
-			)
-			x.ErrItemAlreadyExists_100000(TEST_ERROR_MESSAGE, testDetails, testErr)
-		})
-		if actualResult != ts.desiredResult {
-			for _, message := range errorMessages {
-				t.Error(message)
-			}
-		}
+	if myError.ErrorCode != NOT_POPULATED {
+		t.Error("SystemError.ErrItemNotPopulated_100100 has the wrong error code")
+	}
+	if myError.LineNumber == 0 {
+		t.Error("SystemError.ErrItemNotPopulated_100100 is missing the line number")
+	}
+	if myError.FileName == "" {
+		t.Error("SystemError.ErrItemNotPopulated_100100 is missing the FileName")
+	}
+	if myError.ErrorMsg == "" {
+		t.Error("SystemError.ErrItemNotPopulated_100100 is missing the error message")
 	}
 }

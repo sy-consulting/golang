@@ -15,7 +15,6 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"strconv"
 )
 
 //goland:noinspection ALL
@@ -191,19 +190,19 @@ func initialize(application, environment, internalIP string) *log.Logger {
 	return log.New(os.Stderr, fmt.Sprintf(ERROR_LOG_PREFIX, application, environment, internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
 }
 
-func (se SystemError) ErrItemAlreadyExists_100000(message string, details map[int]string, err error) (myError *Error) {
-	_, filename, line, _ := runtime.Caller(1)
-
-	myError = &Error{
-		ErrorCode:    ITEM_ALREADY_EXISTS,
-		ErrorMsg:     message,
-		ErrorDetails: details,
-		FileName:     filename,
-		LineNumber:   uint(line),
-	}
-
-	return
-}
+//func (se SystemError) ErrItemAlreadyExists_100000(message string, details map[int]string, err error) (myError *Error) {
+//	_, filename, line, _ := runtime.Caller(1)
+//
+//	myError = &Error{
+//		ErrorCode:    ITEM_ALREADY_EXISTS,
+//		ErrorMsg:     message,
+//		ErrorDetails: details,
+//		FileName:     filename,
+//		LineNumber:   uint(line),
+//	}
+//
+//	return
+//}
 
 func (se SystemError) ErrItemNotPopulated_100100(itemName string) (myError *Error) {
 	_, filename, line, _ := runtime.Caller(1)
@@ -225,10 +224,10 @@ func (se SystemError) ErrItemNotPopulated_100100(itemName string) (myError *Erro
 //	return
 //}
 
-func formatErrorDetails(details map[int]string) (errDetails string) {
-	for seq, info := range details {
-		errDetails = errDetails + fmt.Sprintf(ERROR_DETAILS, strconv.Itoa(seq), info)
-	}
-
-	return
-}
+//func formatErrorDetails(details map[int]string) (errDetails string) {
+//	for seq, info := range details {
+//		errDetails = errDetails + fmt.Sprintf(ERROR_DETAILS, strconv.Itoa(seq), info)
+//	}
+//
+//	return
+//}

@@ -1,7 +1,7 @@
 package core
 
 import (
-	"fmt"
+	"github.com/sy-consulting/golang/core/cSystemError"
 	"testing"
 )
 
@@ -13,16 +13,12 @@ const (
 	MOCK_PASSED      = "core.SystemInfoMock{}"
 )
 
-func TestNew(t *testing.T) {
+func TestNewApplication(t *testing.T) {
 
 	type arguments struct {
 		application string
 		environment string
 	}
-
-	var (
-		errorMessages []string
-	)
 
 	tests := []struct {
 		name          string
@@ -30,7 +26,7 @@ func TestNew(t *testing.T) {
 		desiredResult bool
 	}{
 		{
-			name: "positive-case: application and environment are populated",
+			name: "positive-case: application parameter is populated",
 			arguments: arguments{
 				application: TEST_APPLICATION,
 				environment: TEST_ENVIRONMENT,
@@ -38,15 +34,7 @@ func TestNew(t *testing.T) {
 			desiredResult: true,
 		},
 		{
-			name: "negative-case: application and environment are missing",
-			arguments: arguments{
-				application: "",
-				environment: "",
-			},
-			desiredResult: false,
-		},
-		{
-			name: "negative-case: application is missing and environment is populated",
+			name: "negative-case: application parameter are missing",
 			arguments: arguments{
 				application: "",
 				environment: TEST_ENVIRONMENT,
@@ -54,7 +42,15 @@ func TestNew(t *testing.T) {
 			desiredResult: false,
 		},
 		{
-			name: "negative-case: application is populated and environment is missing",
+			name: "positive-case: environment parameter is populated",
+			arguments: arguments{
+				application: TEST_APPLICATION,
+				environment: TEST_ENVIRONMENT,
+			},
+			desiredResult: true,
+		},
+		{
+			name: "negative-case: environment parameter are missing",
 			arguments: arguments{
 				application: TEST_APPLICATION,
 				environment: "",
@@ -65,9 +61,8 @@ func TestNew(t *testing.T) {
 	for _, ts := range tests {
 		t.Run(ts.name, func(t *testing.T) {
 			_, err := New(ts.arguments.application, ts.arguments.environment, MOCK)
-			if err != nil {
-				errorMessages = append(errorMessages, fmt.Sprintf("Parameters passed to New('%v', '%v', '%v') are not valid", ts.arguments.application, ts.arguments.environment,
-					"core.SystemInfoMock{}"))
+			if err != nil && err.ErrorCode != cSystemError.NOT_POPULATED {
+				t.Error(ts.name + " check failed")
 			}
 		})
 	}

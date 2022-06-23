@@ -47,7 +47,6 @@ func New(application, environment string, mock bool) (cmPtr *Manager, myError *c
 
 	cmPtr.internalIP = cmPtr.systemInfo.GetIP()
 	cmPtr.systemLogger = cSystemLogger.New(application, environment, cmPtr.internalIP)
-	cmPtr.systemLogger.LogMessage("This is a test")
 
 	return
 }
