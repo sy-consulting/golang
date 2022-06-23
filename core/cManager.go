@@ -3,13 +3,15 @@
 package core
 
 import (
+	"github.com/sy-consulting/golang/core/cSystemError"
 	"github.com/sy-consulting/golang/core/cSystemInfo"
 	"github.com/sy-consulting/golang/core/cSystemLogger"
 )
 
+//goland:noinspection ALL
 const (
-	CORE_MESSAGES = "MESSAGES"
-	CORE_DATABASE = "DATABASE"
+	CORE_APPLICATION = "APPLICATION"
+	CORE_ENVIRONMENT = "ENVIRONMENT"
 )
 
 type Manager struct {
@@ -18,10 +20,11 @@ type Manager struct {
 	internalIP   string
 	systemInfo   cSystemInfo.SystemInfoIF
 	systemLogger *cSystemLogger.SystemLogger
+	systemError  *cSystemError.SystemError
 }
 
 // Core.New
-func New(application, environment string, mock bool) (cmPtr *Manager) {
+func New(application, environment string, mock bool) (cmPtr *Manager, myError *cSystemError.Error) {
 
 	cmPtr = &Manager{
 		application: application,
@@ -29,8 +32,15 @@ func New(application, environment string, mock bool) (cmPtr *Manager) {
 		internalIP:  "",
 	}
 
-	cmPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfo{})
+	cmPtr.systemError = cSystemError.New(application, environment, cmPtr.internalIP)
+	if application == "" {
+		return nil, cmPtr.systemError.ErrItemNotPopulated_100100(CORE_APPLICATION)
+	}
+	if environment == "" {
+		return nil, cmPtr.systemError.ErrItemNotPopulated_100100(CORE_ENVIRONMENT)
+	}
 
+	cmPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfo{})
 	if mock {
 		cmPtr.systemInfo = cSystemInfo.SystemInfoIF(cSystemInfo.SystemInfoMock{})
 	}

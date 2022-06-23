@@ -16,53 +16,25 @@ const (
 )
 
 func TestNew(t *testing.T) {
-
-	type arguments struct {
-		application string
-		environment string
-		internalIP  string
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	if x == nil {
+		t.Error("SystemLogger.New failed to return an object")
 	}
+}
 
-	var (
-		errorMessages []string
-		actualResult  bool
-	)
-
-	tests := []struct {
-		name          string
-		arguments     arguments
-		desiredResult bool
-	}{
-		{
-			name: "positive-case: writes log record with all parameters populated",
-			arguments: arguments{
-				application: TEST_APPLICATION,
-				environment: TEST_ENVIRONMENT,
-				internalIP:  TEST_INTERNALIP,
-			},
-			desiredResult: true,
-		},
+func TestDebugOn(t *testing.T) {
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	x.TurnDebugOn()
+	if !x.IsDebugOn() {
+		t.Error("SystemLogger.TurnDebugOn is not working")
 	}
-	for _, ts := range tests {
-		actualResult = true
-		t.Run(ts.name, func(t *testing.T) {
-			var (
-				x = New(ts.arguments.application, ts.arguments.environment, ts.arguments.internalIP)
-			)
-			x.TurnDebugOn()
-			x.DebugMessage("This is a debug message from Mr. Mock")
-			x.TurnDebugOff()
-			x.LogMessage("This is a info test message from Mr. Mock")
-			x.DebugMessage("Just checking to make sure a debug message was not displayed")
-			x.TurnDebugOn()
-			x.DebugMessage("The final debug test message from Mr. Mock")
-			x.LogMessage("and the final Info message is displayed")
-		})
-		if actualResult != ts.desiredResult {
-			for _, message := range errorMessages {
-				t.Error(message)
-			}
-		}
+}
+
+func TestDebugOff(t *testing.T) {
+	x := New(TEST_APPLICATION, TEST_ENVIRONMENT, TEST_INTERNALIP)
+	x.TurnDebugOff()
+	if x.IsDebugOn() {
+		t.Error("SystemLogger.TurnDebugOff is not working")
 	}
 }
 

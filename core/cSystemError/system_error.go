@@ -18,15 +18,20 @@ import (
 	"strconv"
 )
 
+//goland:noinspection ALL
 const (
 	// Formatted Lines
-	FORMATTED_ERROR_MESSAGE = "ERROR Code: %v \nERROR Message: %v\nERROR Details: %v\nERROR Err: %v\nERROR FileName: %v\nERROR LineNumber: %v"
-	ERROR_LOG_PREFIX        = "%v.%v.%v:"
-	ERROR_DETAILS           = "ERROR DETAILS Sequence: %v Info: %v"
+	ERROR_LOG_PREFIX = "%v.%v.%v:"
+	ERROR_DETAILS    = "ERROR DETAILS Sequence: %v Info: %v"
 	// Error Codes
-	ITEM_ALREADY_EXISTS = 100000
-	ITEM_NOT_FOUND      = 100099
-	NOT_AUTHORIZED      = 100100
+	ITEM_ALREADY_EXISTS         = 100000
+	ITEM_ALREADY_EXISTS_MESSAGE = "%v already exists"
+	ITEM_NOT_FOUND              = 100099
+	ITEM_NOT_FOUND_MESSAGE      = "%v was/were not found"
+	NOT_POPULATED               = 100100
+	NOT_POPULATED_MESSAGE       = "%v must be populated"
+	NOT_AUTHORIZED              = 100100
+	NOT_AUTHORIZED_MESSAGE      = "Your roles %v are not authorized to %v"
 	//100100: {100100, USERERROR, 2, "List of users roles, Requested action", ": Your roles %v are not authorized to %v", EmptyMap, "", nil},
 	//100200: {100200, PROCESSERROR, 0, "None", ": Row has been updated since reading it, re-read the row", EmptyMap, "", nil},
 	//100500: {100500, PROCESSERROR, 1, "Thing being changed", ": You are making changes to a canceled or completed %v", EmptyMap, "", nil},
@@ -46,7 +51,6 @@ const (
 	//nil},
 	//200511: {200511, PROCESSERROR, 2, "Parameter name, Another parameter name", ": %v and %v must both be populated or null", EmptyMap, "", nil},
 	//200512: {200512, PROCESSERROR, 2, "Parameter name, Another parameter name", ": %v and %v must both be populated", EmptyMap, "", nil},
-	//200513: {200513, PROCESSERROR, 1, "Parameter name", ": %v must be populated", EmptyMap, "", nil},
 	//200514: {200514, PROCESSERROR, 3, "Parameter name, Another parameter name, Another parameter name", ": %v, %v and %v must all be populated",
 	//EmptyMap, "", nil},
 	//200515: {200515, PROCESSERROR, 2, "Parameter name, Another parameter name", ": %v must be empty when %v is populated", EmptyMap, "", nil},
@@ -156,13 +160,11 @@ const (
 )
 
 type Error struct {
-	ErrorCode             uint32         `json:"ErrorCode"`
-	ErrorMsg              string         `json:"ErrorMessage"`
-	FormattedErrorMessage string         `json:"FormattedErrorMessage"`
-	ErrorDetails          map[int]string `json:"ErrorDetails"`
-	Err                   error          `json:"RawError"`
-	FileName              string         `json:"FileName"`
-	LineNumber            uint           `json:"LineNumber"`
+	ErrorCode    uint32         `json:"ErrorCode"`
+	ErrorMsg     string         `json:"ErrorMessage"`
+	ErrorDetails map[int]string `json:"ErrorDetails"`
+	FileName     string         `json:"FileName"`
+	LineNumber   uint           `json:"LineNumber"`
 }
 
 type SystemError struct {
@@ -189,26 +191,39 @@ func initialize(application, environment, internalIP string) *log.Logger {
 	return log.New(os.Stderr, fmt.Sprintf(ERROR_LOG_PREFIX, application, environment, internalIP), log.Lmsgprefix|log.LstdFlags|log.Lmicroseconds|log.LUTC)
 }
 
-func (se SystemError) ErrItemAlreadyExists_100000(message string, details map[int]string, err error) *Error {
+func (se SystemError) ErrItemAlreadyExists_100000(message string, details map[int]string, err error) (myError *Error) {
 	_, filename, line, _ := runtime.Caller(1)
 
-	return &Error{
-		ErrorCode:             ITEM_ALREADY_EXISTS,
-		ErrorMsg:              message,
-		FormattedErrorMessage: formatErrorMessage(message, filename, details, line, ITEM_ALREADY_EXISTS, err),
-		ErrorDetails:          details,
-		Err:                   err,
-		FileName:              filename,
-		LineNumber:            uint(line),
+	myError = &Error{
+		ErrorCode:    ITEM_ALREADY_EXISTS,
+		ErrorMsg:     message,
+		ErrorDetails: details,
+		FileName:     filename,
+		LineNumber:   uint(line),
 	}
-}
-
-func formatErrorMessage(message, filename string, details map[int]string, line, errorCode int, err error) (formattedErrorMessage string) {
-
-	formattedErrorMessage = fmt.Sprintf(FORMATTED_ERROR_MESSAGE, errorCode, message, formatErrorDetails(details), err, filename, line)
 
 	return
 }
+
+func (se SystemError) ErrItemNotPopulated_100100(itemName string) (myError *Error) {
+	_, filename, line, _ := runtime.Caller(1)
+
+	myError = &Error{
+		ErrorCode:  NOT_POPULATED,
+		ErrorMsg:   fmt.Sprintf(NOT_POPULATED_MESSAGE, itemName),
+		FileName:   filename,
+		LineNumber: uint(line),
+	}
+
+	return
+}
+
+//func formatErrorMessage(message, filename string, details map[int]string, line, errorCode int) (formattedErrorMessage string) {
+//
+//	formattedErrorMessage = fmt.Sprintf(FORMATTED_ERROR_MESSAGE, errorCode, message, formatErrorDetails(details), filename, line)
+//
+//	return
+//}
 
 func formatErrorDetails(details map[int]string) (errDetails string) {
 	for seq, info := range details {

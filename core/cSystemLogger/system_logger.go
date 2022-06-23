@@ -66,6 +66,14 @@ func (sl SystemLogger) TurnDebugOn() {
 	sl.printLogLevel()
 }
 
+func (sl SystemLogger) IsDebugOn() (result bool) {
+	if logLevel == DEBUG {
+		return true
+	}
+
+	return false
+}
+
 func (sl SystemLogger) TurnDebugOff() {
 	logLevel = INFO
 	logValue = INFO_VALUE

@@ -22,7 +22,6 @@ func TestNew(t *testing.T) {
 
 	var (
 		errorMessages []string
-		actualResult  bool
 	)
 
 	tests := []struct {
@@ -64,26 +63,12 @@ func TestNew(t *testing.T) {
 		},
 	}
 	for _, ts := range tests {
-		actualResult = true
 		t.Run(ts.name, func(t *testing.T) {
-			var (
-				x = New(ts.arguments.application, ts.arguments.environment, MOCK)
-			)
-			if x.application != TEST_APPLICATION {
-				actualResult = false
-				errorMessages = append(errorMessages, fmt.Sprintf("Parameters passed to New('%v', '%v', '%v') and the application is not valid", ts.arguments.application, ts.arguments.environment,
-					"core.SystemInfoMock{}"))
-			}
-			if x.environment != TEST_ENVIRONMENT {
-				actualResult = false
-				errorMessages = append(errorMessages, fmt.Sprintf("Parameters passed to New('%v', '%v', '%v') and the environment is not valid", ts.arguments.application, ts.arguments.environment,
+			_, err := New(ts.arguments.application, ts.arguments.environment, MOCK)
+			if err != nil {
+				errorMessages = append(errorMessages, fmt.Sprintf("Parameters passed to New('%v', '%v', '%v') are not valid", ts.arguments.application, ts.arguments.environment,
 					"core.SystemInfoMock{}"))
 			}
 		})
-		if actualResult != ts.desiredResult {
-			for _, message := range errorMessages {
-				t.Error(message)
-			}
-		}
 	}
 }
